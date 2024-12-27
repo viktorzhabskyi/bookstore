@@ -70,8 +70,7 @@ Your main task is not just to implement the project but to learn how to break do
    Ensure each `Dockerfile` is properly configured to build and run its respective service.
 
 3. **Step 3: Creating docker-compose.yml and Environment Variables**
-  
-  Write a `docker-compose.yml` file to define how the services interact and to simplify the orchestration process.
+    Write a `docker-compose.yml` file to define how the services interact and to simplify the orchestration process.
 
 4. **Step 4: Building and Running Services**
    
