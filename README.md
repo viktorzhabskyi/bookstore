@@ -12,8 +12,6 @@ This project is structured into three primary components: backend services (RDS 
 
 The platform utilizes PostgreSQL for database management and Redis for caching, ensuring optimal performance.
 
-### Diagram
-![Architecture Diagram](diagram.png)
 
 ## File Structure
 
@@ -29,7 +27,7 @@ The platform utilizes PostgreSQL for database management and Redis for caching, 
 - **Files**:
   - `manage.py`: Entry point for the backend application.
   - `requirements.txt`: Lists dependencies for the project.
-  - `backend_redis/`: Contains the core backend logic, configuration files, and routes for the application. 
+  - `backend_redis/`: Contains the core backend logic, configuration files, and routes for the application.
 
 ### 3. **Frontend**
 - **Purpose**: Provides the user interface.
@@ -37,6 +35,7 @@ The platform utilizes PostgreSQL for database management and Redis for caching, 
   - `manage.py`: Entry point for the frontend application.
   - `requirements.txt`: Lists frontend dependencies.
   - `frontend/`: Contains configuration files, routing, views, and templates for the frontend interface.
+
 
 ## Lifehacks
 
@@ -51,71 +50,50 @@ Next, use it when taking courses to find the information you need for the projec
 Refer back to the course we took initially (about ChatGPT), recall the methods and strategies of prompts, and use them.
 Your main task is not just to implement the project but to learn how to break down new information into the simplest pieces with ChatGPT and build understanding as quickly as possible.
 
-## Steps to Dockerize the Code
-
-1. **Step 1: Cloning the Repository**
-
-   Clone the repository to your local machine and navigate to the project directory:
-   ```bash
-   git clone https://github.com/THE-GAME-DEVOPS/bookstore.git
-   cd bookstore
-   ```
-
-2. **Step 2: Writing Dockerfiles for Services**
-
-   Write a `Dockerfile` for each service, including:
-   - Backend RDS
-   - Backend Redis
-   - Frontend
-  
-    Ensure each `Dockerfile` is properly configured to build and run its respective service.
-
-3. **Step 3: Creating docker-compose.yml and Environment Variables**
-
-    Write a `docker-compose.yml` file to define how the services interact and to simplify the orchestration process.
-
-4. **Step 4: Building and Running Services**
-   
-   Build and start all services using Docker Compose with the `--build` option to rebuild images:
-     ```bash
-     docker-compose up -d --build
-     ```
-
-5. **Step 5: Monitoring Logs**
-   
-   To troubleshoot issues and monitor logs for each service:
-   - View logs for all services:
-     ```bash
-     docker-compose logs -f
-     ```
-   - View logs for a specific service (e.g., backend-rds):
-     ```bash
-     docker-compose logs -f backend-rds
-     ```
-   - Stop monitoring logs by pressing `Ctrl+C`.
-
-6. **Step 6: Stopping Services**
-  
-  To stop all running services:
-   ```bash
-   docker-compose down
-   ```
-
 ## Deployment
 
-**Important:** Do not modify the code. The code is written correctly, and your task is to deploy it to fulfill the project requirements. Therefore, there is no need to add or rewrite code as it is already functional.
-
 ### Backend Services
-- Deploy the backend (backend_rds, backend_redis) services using EC2 instances as specified in the architecture diagram.
+- Deploy the backend services using EC2 instances and AWS services as specified in the three integration steps.
 
 ### Frontend
-- Deploy the frontend service using EC2 instances as specified in the architecture diagram.
+- Deploy the frontend service using EC2 instances behind the ALB for a consistent and scalable deployment strategy.
 
 ### Dockerization
-
 - All services should be containerized using Docker to ensure ease of scaling and deployment.
 
 ### CI/CD Process
-
 - Implement separate CI/CD pipelines for backend and frontend deployment to automate the process effectively.
 
+This structured AWS integration ensures a robust, scalable, and secure deployment for the online bookstore platform.
+
+## AWS Deployment
+
+### Step 1: Deploying the Basic Architecture
+
+![Architecture Diagram Step 1](docs\assets\diagram-step1.png)
+
+In the first step, deploy the application with a simple setup:
+- Launch an EC2 instance in a **public subnet** for hosting the application backend.
+- Use **Amazon ECR** for managing container images.
+
+This step ensures that the backend application is accessible and containerized for consistency across environments.
+
+### Step 2: Introducing Load Balancing
+
+![Architecture Diagram Step 2](docs\assets\diagram-step2.png)
+In the second step, enhance scalability and availability:
+- Add an **Application Load Balancer (ALB)** in the **public subnet** to distribute traffic across multiple EC2 instances.
+- Use multiple EC2 instances for the backend to handle increased traffic efficiently.
+- Continue using **Amazon ECR** for container management.
+
+This step ensures fault tolerance and improves performance under higher loads.
+
+### Step 3: Incorporating Databases and Caching
+
+![Architecture Diagram Step 3](docs\assets\diagram-step3.png)
+In the final step, integrate data storage and caching:
+- Deploy **RDS** and **ElastiCache (Redis)** in a **private subnet** for secure database and caching operations.
+- Keep the ALB and EC2 instances in the **public subnet** to handle user requests and forward them to the backend.
+- Maintain the **Amazon ECR** for containerized deployment.
+
+This step ensures secure and efficient handling of relational data and cached sessions, optimizing both performance and security.
