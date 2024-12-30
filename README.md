@@ -70,7 +70,7 @@ This structured AWS integration ensures a robust, scalable, and secure deploymen
 
 ### Step 1: Deploying the Basic Architecture
 
-![Architecture Diagram Step 1](docs\assets\diagram-step1.png)
+![Architecture Diagram Step 1](docs/assets/diagram-step1.png)
 
 In the first step, deploy the application with a simple setup:
 - Launch an EC2 instance in a **public subnet** for hosting the application backend.
@@ -80,7 +80,7 @@ This step ensures that the backend application is accessible and containerized f
 
 ### Step 2: Introducing Load Balancing
 
-![Architecture Diagram Step 2](docs\assets\diagram-step2.png)
+![Architecture Diagram Step 2](docs/assets/diagram-step2.png)
 In the second step, enhance scalability and availability:
 - Add an **Application Load Balancer (ALB)** in the **public subnet** to distribute traffic across multiple EC2 instances.
 - Use multiple EC2 instances for the backend to handle increased traffic efficiently.
@@ -90,7 +90,7 @@ This step ensures fault tolerance and improves performance under higher loads.
 
 ### Step 3: Incorporating Databases and Caching
 
-![Architecture Diagram Step 3](docs\assets\diagram-step3.png)
+![Architecture Diagram Step 3](docs/assets/diagram-step3.png)
 In the final step, integrate data storage and caching:
 - Deploy **RDS** and **ElastiCache (Redis)** in a **private subnet** for secure database and caching operations.
 - Keep the ALB and EC2 instances in the **public subnet** to handle user requests and forward them to the backend.
