@@ -182,4 +182,9 @@ Setting up a CI/CD pipeline is essential for automating the build, test, and dep
 
 Congratulations on successfully setting up and integrating your bookstore application with AWS! This project not only demonstrates the fundamentals of scalable and efficient application design but also equips you with the skills to deploy and manage real-world systems. Keep exploring, iterating, and improving as you grow in your DevOps journey. 
 
+<p align="center">
+  <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDBkenpleWp5Y3NkZ3h0NDRoMTlxbXFmN2h4MGpvaWg3cGpkOHFhOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/10Shl99Vghh5aU/giphy.gif" width="50%">
+</p>
+
+
 Great work!
