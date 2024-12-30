@@ -81,19 +81,19 @@ cd bookstore
 Write a `Dockerfile` for each service, including:
 - Backend RDS
 - Backend Redis
-- Frontend with Nginx
+- Frontend
 
 Ensure each `Dockerfile` is properly configured to build and run its respective service.
 
 ### Step 3: Creating `docker-compose.yml` and Environment Variables
 Write a `docker-compose.yml` file to define all the services, including Redis, PostgreSQL, and backend services. Include the following:
-- **Redis**: Use the official Redis image (Redis Docker Hub).
-- **PostgreSQL**: Use the official PostgreSQL image (PostgreSQL Docker Hub).
+- **Redis**: Use the official Redis image ([Redis Docker Hub](https://hub.docker.com/_/redis)).
+- **PostgreSQL**: Use the official PostgreSQL image ([PostgreSQL Docker Hub](https://hub.docker.com/_/postgres)).
 - **backend-rds**: This service should depend on PostgreSQL.
 - **backend-redis**: This service should depend on Redis.
-- **Frontend**: Use the frontend Dockerfile built with Nginx (Nginx Docker Hub).
+- **Frontend**: Use the frontend Dockerfile built.
 
-Make sure to place the corresponding `Dockerfile` for each backend service in the correct directory.
+***Make sure to place the corresponding `Dockerfile` for each backend service in the correct directory.***
 
 ### Step 4: Building and Running Services
 Build and start all services using Docker Compose with the `--build` option to rebuild images:
