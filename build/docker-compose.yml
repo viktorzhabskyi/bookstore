@@ -9,7 +9,7 @@ services:
       SECRET_KEY: "SECRET_KEY"
       CORS_ALLOWED_ORIGINS: "http://localhost:8001,http://127.0.0.1:8001,http://0.0.0.0:8001,http://localhost,http://127.0.0.1,http://0.0.0.0"
       DEBUG: "true"
-      REDIS_HOST: bookstore-cache.7jixet.ng.0001.use1.cache.amazonaws.com
+      REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_DB: 0
       REDIS_PASSWORD: ${REDIS_PASSWORD}
@@ -28,9 +28,9 @@ services:
     environment:
       CORS_ALLOWED_ORIGINS: "http://localhost:8000,http://127.0.0.1:8000,http://0.0.0.0:8000,http://localhost,http://127.0.0.1,http://0.0.0.0"
       DB_NAME: postgres
-      DB_USER: postgres
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: bookstore-db.c5akuqggc4lo.us-east-1.rds.amazonaws.com
+      DB_USER: root
+      DB_PASSWORD: 123
+      DB_HOST: postgres
       DB_PORT: 5432
     networks:
       - backend_network
