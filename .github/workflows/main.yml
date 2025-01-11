@@ -59,6 +59,14 @@ jobs:
           script: |
             cd /home/ubuntu/workdir/
             
+            export TAG_RDS=${{ env.TAG_RDS }}
+            export TAG_REDIS=${{ env.TAG_REDIS }}
+            export TAG_FRONTEND=${{ env.TAG_FRONTEND }}
+      
+            echo "TAG_RDS: $TAG_RDS"
+            echo "TAG_REDIS: $TAG_REDIS"
+            echo "TAG_FRONTEND: $TAG_FRONTEND"
+        
             make down
             make clean
             make up TAG_RDS=$TAG_RDS TAG_REDIS=$TAG_REDIS TAG_FRONTEND=$TAG_FRONTEND
