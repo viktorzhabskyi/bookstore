@@ -39,14 +39,16 @@ jobs:
 
       - name: Generate TAG with Makefile
         run: |
-          TAG_RDS=$(make -s tag TARGET_FOLDER=backend_rds) 
-          echo "TAG_RDS=${TAG_RDS}" >> $GITHUB_ENV
           
-          TAG_REDIS=$(make -s tag TARGET_FOLDER=backend_redis) 
-          echo "TAG_REDIS=${TAG_REDIS}" >> $GITHUB_ENV
+          echo "TAG_RDS=$(make -s tag TARGET_FOLDER=backend_rds)" >> $GITHUB_ENV
           
-          TAG_FRONTEND=$(make -s tag TARGET_FOLDER=frontend) 
-          echo "TAG_FRONTEND=${TAG_FRONTEND}" >> $GITHUB_ENV
+          echo "TAG_REDIS=$(make -s tag TARGET_FOLDER=backend_redis)" >> $GITHUB_ENV
+          
+          echo "TAG_FRONTEND=$(make -s tag TARGET_FOLDER=frontend)" >> $GITHUB_ENV
+      - name: Test
+        run: |
+          echo ${{ env.TAG_RDS }}
+          echo $TAG_RDS
 
       - name: Connect to EC2 and run docker-compose
         uses: appleboy/ssh-action@v0.1.7
