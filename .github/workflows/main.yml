@@ -56,8 +56,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ubuntu/workdir/
-            echo $TAG_FRONTEND
+            
             make down
             make clean
-            make up
+            make up TAG_RDS=$TAG_RDS TAG_REDIS=$TAG_REDIS TAG_FRONTEND=$TAG_FRONTEND
+
 

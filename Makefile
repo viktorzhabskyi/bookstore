@@ -29,9 +29,12 @@ push: docker-login
 clean:
 	docker images | grep "bookstore" | awk '{print $3}' | xargs -r docker rmi -f
 
+TAG_RDS = "undefined"
+TAG_REDIS = "undefined"
+TAG_FRONTEND= "undefined"
 
 up:
-	docker-compose -f ./build/docker-compose.yml up -d --force-recreate --build-arg IMAGE_NAME_RDS=${{ env.TAG_RDS }} --build-arg IMAGE_NAME_REDIS=${{ env.TAG_REDIS }} --build-arg IMAGE_NAME_FRONTEND=${{ env.TAG_FRONTEND }}
+	docker-compose -f ./build/docker-compose.yml up -d --force-recreate --build-arg IMAGE_NAME_RDS=$(TAG_RDS) --build-arg IMAGE_NAME_REDIS=$(TAG_REDIS) --build-arg IMAGE_NAME_FRONTEND=$(TAG_FRONTEND)
 
 down:
 	docker-compose -f ./build/docker-compose.yml down
