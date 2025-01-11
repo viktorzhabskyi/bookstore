@@ -1,0 +1,63 @@
+name: Deploy redis and rds to prod
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Set up Make
+        run: sudo apt-get install make
+
+      - name: Build Docker Images
+        run: |
+          make builds
+          
+      - name: Push Docker Images to ECR
+        run: |
+          make push TARGET_FOLDER=backend_rds
+          make push TARGET_FOLDER=backend_redis
+          make push TARGET_FOLDER=frontend
+
+      - name: Generate TAG with Makefile
+        run: |
+          TAG_RDS=$(make -s tag TARGET_FOLDER=backend_rds) 
+          echo "TAG_RDS=${TAG_RDS}" >> $GITHUB_ENV
+          
+          TAG_REDIS=$(make -s tag TARGET_FOLDER=backend_redis) 
+          echo "TAG_REDIS=${TAG_REDIS}" >> $GITHUB_ENV
+          
+          TAG_FRONTEND=$(make -s tag TARGET_FOLDER=frontend) 
+          echo "TAG_FRONTEND=${TAG_FRONTEND}" >> $GITHUB_ENV
+
+      - name: Connect to EC2 and run docker-compose
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/workdir/
+            
+            make down
+            make clean
+            make up
+
