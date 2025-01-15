@@ -68,11 +68,11 @@ jobs:
       - name: Build and push backend_redis
         run: |
           echo "Modified files: ${{ contains(github.event.head_commit.message, 'backend_redis') }}"
-          make image TARGET_FOLDER=backend_redis
-          make push TARGET_FOLDER=backend_redis
-          make update-compose TARGET_FOLDER=backend_redis
-          
-          cat build/docker-compose.yml
+#          make image TARGET_FOLDER=backend_redis
+#          make push TARGET_FOLDER=backend_redis
+#          make update-compose TARGET_FOLDER=backend_redis
+#
+#          cat build/docker-compose.yml
 
   build-and-push-frontend:
     needs: setup
