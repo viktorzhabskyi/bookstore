@@ -13,7 +13,6 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      ecr-login-status: ${{ steps.ecr-login.outcome }}
       backend_rds: ${{ steps.changes.outputs.backend_rds }}
       backend_redis: ${{ steps.changes.outputs.backend_redis }}
       frontend: ${{ steps.changes.outputs.frontend }}
@@ -21,21 +20,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Install Make
-        run: sudo apt-get install make
-
-      - name: Install yq
-        run: |
-          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-          sudo chmod +x /usr/bin/yq
 
       - name: Filter changes
         uses: dorny/paths-filter@v2
@@ -58,10 +42,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Log in to Amazon ECR
         id: ecr-login
         run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Install Make
+        run: sudo apt-get install make
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
 
       - name: Build and push backend_rds
         run: |
@@ -80,6 +79,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Install Make
+        run: sudo apt-get install make
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
+
       - name: Build and push backend_redis
         run: |
           make image TARGET_FOLDER=backend_redis
@@ -96,6 +115,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Install Make
+        run: sudo apt-get install make
+
+      - name: Install yq
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
 
       - name: Build and push frontend
         run: |
