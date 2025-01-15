@@ -107,8 +107,9 @@ jobs:
           source: ./
           target: /home/ubuntu/workdir/
           script: |
-            cd /home/ubuntu/workdir/
+
+            make up
+#            cd /home/ubuntu/workdir/
 
 #            make down
 #            make clean
-            make up
