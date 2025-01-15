@@ -29,8 +29,6 @@ jobs:
       - name: Log in to Amazon ECR
         id: ecr-login
         run: |
-          echo "Modified files: ${{ github.event.head_commit.modified }}"
-          echo "Modified files: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_rds/') }}"
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Install Make
@@ -60,7 +58,7 @@ jobs:
 
   build-and-push-backend-redis:
     needs: setup
-    if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_redis/') }}
+#    if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_redis/') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -69,6 +67,7 @@ jobs:
 
       - name: Build and push backend_redis
         run: |
+          echo "Modified files: ${{ contains(github.event.head_commit.message, 'backend_redis') }}"
           make image TARGET_FOLDER=backend_redis
           make push TARGET_FOLDER=backend_redis
           make update-compose TARGET_FOLDER=backend_redis
