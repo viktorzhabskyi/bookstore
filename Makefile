@@ -14,7 +14,7 @@ image:
 		--tag $(TAG) .
 
 update-compose:
-	yq eval '.services.backend_redis.image = $(TAG)' -i $(DOCKER_COMPOSE_FILE)
+	yq eval '.services.$(TARGET_FOLDER).image = "$(TAG)"' -i $(DOCKER_COMPOSE_FILE)
 
 builds:
 	$(MAKE) image TARGET_FOLDER=backend_redis
