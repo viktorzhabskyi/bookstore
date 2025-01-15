@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ecr-login-status: ${{ steps.ecr-login.outcome }}
+      backend_rds: ${{ steps.changes.outputs.backend_rds }}
+      backend_redis: ${{ steps.changes.outputs.backend_redis }}
+      frontend: ${{ steps.changes.outputs.frontend }}
 
     steps:
       - name: Checkout code
