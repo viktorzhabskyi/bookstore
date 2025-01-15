@@ -29,11 +29,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Log in to Amazon ECR
-        id: ecr-login
-        run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
-
       - name: Install Make
         run: sudo apt-get install make
 
@@ -56,12 +51,17 @@ jobs:
 
   build-and-push-backend-rds:
     needs: setup
-    if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_rds/') }}
+    if: ${{ needs.setup.outputs.backend_rds == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 638693734667.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Build and push backend_rds
         run: |
@@ -90,7 +90,7 @@ jobs:
 
   build-and-push-frontend:
     needs: setup
-    if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'frontend/') }}
+    if: ${{ needs.setup.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
