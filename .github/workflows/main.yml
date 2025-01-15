@@ -39,6 +39,18 @@ jobs:
           sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
 
+      - name: Filter changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            backend_rds:
+              - 'backend_rds/**'
+            backend_redis:
+              - 'backend_redis/**'
+            frontend:
+              - 'frontend/**'
+
   build-and-push-backend-rds:
     needs: setup
     if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_rds/') }}
@@ -58,7 +70,7 @@ jobs:
 
   build-and-push-backend-redis:
     needs: setup
-#    if: ${{ github.event.head_commit.modified && contains(github.event.head_commit.modified, 'backend_redis/') }}
+    if: ${{ needs.setup.outputs.backend_redis == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -67,13 +79,11 @@ jobs:
 
       - name: Build and push backend_redis
         run: |
-          echo "Modified files SSS: ${{ github.event.head_commit.message }}"
-          echo "Modified files: ${{ contains(github.event.head_commit.message, 'backend_redis') }}"
-#          make image TARGET_FOLDER=backend_redis
-#          make push TARGET_FOLDER=backend_redis
-#          make update-compose TARGET_FOLDER=backend_redis
-#
-#          cat build/docker-compose.yml
+          make image TARGET_FOLDER=backend_redis
+          make push TARGET_FOLDER=backend_redis
+          make update-compose TARGET_FOLDER=backend_redis
+
+          cat build/docker-compose.yml
 
   build-and-push-frontend:
     needs: setup
