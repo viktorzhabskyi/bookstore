@@ -5,6 +5,7 @@ TARGET_OS = linux#linux darwin windows
 TARGET_ARCH = amd64#arm64
 TARGET_FOLDER := backend_redis
 TAG = ${REGISTRY}/${APP}:${TARGET_FOLDER}-${VERSION}-$(TARGET_OS)-${TARGET_ARCH}
+DOCKER_COMPOSE_FILE = build/docker-compose.yml
 
 image:
 	docker build --build-arg TARGET_FOLDER=$(TARGET_FOLDER) \
@@ -12,8 +13,8 @@ image:
 		--file ./build/Dockerfile \
 		--tag $(TAG) .
 
-tag:
-	@echo $(TAG)
+update-compose:
+	yq eval '.services.backend_redis.image = $(TAG)' -i $(DOCKER_COMPOSE_FILE)
 
 builds:
 	$(MAKE) image TARGET_FOLDER=backend_redis
@@ -29,12 +30,8 @@ push: docker-login
 clean:
 	docker images | grep "bookstore" | awk '{print $3}' | xargs -r docker rmi -f
 
-TAG_RDS = "undefined"
-TAG_REDIS = "undefined"
-TAG_FRONTEND= "undefined"
-
 up:
-	 IMAGE_NAME_RDS=$(TAG_RDS) IMAGE_NAME_REDIS=$(TAG_REDIS) IMAGE_NAME_FRONTEND=$(TAG_FRONTEND) docker-compose -f ./build/docker-compose.yml up -d --force-recreate
+	 docker-compose -f ./build/docker-compose.yml up -d --build
 
 down:
 	docker-compose -f ./build/docker-compose.yml down

@@ -1,9 +1,8 @@
 version: '3.8'
-
 services:
   # Backend Redis service
   backend_redis:
-    image: ${IMAGE_NAME_REDIS}
+    image: еуіе_ефп
     container_name: backend-redis
     environment:
       SECRET_KEY: "SECRET_KEY"
@@ -19,9 +18,8 @@ services:
       - backend_network
     ports:
       - "8002:8000"
-
   backend_rds:
-    image: ${IMAGE_NAME_RDS}
+    image: еуіе_ефп
     container_name: backend-rds
     depends_on:
       - postgres
@@ -36,9 +34,8 @@ services:
       - backend_network
     ports:
       - "8001:8000"
-
   frontend:
-    image: ${IMAGE_NAME_FRONTEND}
+    image: еуіе_ефп
     container_name: frontend
     environment:
       BACKEND_REDIS_URL: "http://backend-redis:8000/test_connection/"
@@ -47,7 +44,6 @@ services:
       - backend_network
     ports:
       - "8000:8000"
-
   redis:
     image: redis:7.4.2
     container_name: redis
@@ -55,7 +51,6 @@ services:
       - "6379:6379"
     networks:
       - backend_network
-
   postgres:
     image: postgres
     container_name: postgres
@@ -67,12 +62,11 @@ services:
       - "5432:5432"
     networks:
       - backend_network
-
-
+  fronntend:
+    image: еуіе_ефп
 networks:
   backend_network:
     driver: bridge
-
 volumes:
   redis_data:
   postgres_data:
